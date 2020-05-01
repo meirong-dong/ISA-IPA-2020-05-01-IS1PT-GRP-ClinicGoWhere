@@ -1,0 +1,27 @@
+{% include "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block page_content %}
+<div class="container">
+	<iframe src="{{ url_for('get_map') }}" width="100%" height="300"></iframe>
+		 {% for message in get_flashed_messages() %}
+    <div class="alert alert-warning">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        {{ message }}
+    </div>
+    {% endfor %}
+</div>
+<div class="container">
+	<div class="row justify-content-md-center">
+		<div class="col-md-8 col-md-offset-2" class="jumbotron vertical-center" >
+			<form action="" method="POST">
+    	           {#{form.postal_code.label}} {{form.postal_code()}}
+    	           {{ form.csrf_token }}
+    	           {{form.submit}#}
+    	           {{ wtf.quick_form(form) }}
+    	    </form>
+    	</div>
+    </div>
+</div>
+{% endblock %}
+
