@@ -91,7 +91,7 @@ def loaded_clinics():
 
 def googlemap(clinics,latitude,longitude):
     # search google map for distance and timing
-    google_maps = googlemaps.Client(key='AIzaSyDk6S3R97hYIn52mcpcdxuLzIjdEgb1Jk0')
+    google_maps = googlemaps.Client(key='Your API')
     clinics['Distance'] = pd.Series(np.zeros(len(clinics)), index=clinics.index)
     clinics['Travel Time'] = pd.Series(np.zeros(len(clinics)), index=clinics.index)
 
