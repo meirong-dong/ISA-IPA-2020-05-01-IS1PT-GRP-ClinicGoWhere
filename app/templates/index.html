@@ -15,9 +15,6 @@
 	<div class="row justify-content-md-center">
 		<div class="col-md-8 col-md-offset-2" class="jumbotron vertical-center" >
 			<form action="" method="POST">
-    	           {#{form.postal_code.label}} {{form.postal_code()}}
-    	           {{ form.csrf_token }}
-    	           {{form.submit}#}
     	           {{ wtf.quick_form(form) }}
     	    </form>
     	</div>
