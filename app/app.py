@@ -47,36 +47,6 @@ def get_coordinates(postal_code):
             break
     return results
 
-
-# to understand the clustering in geographical visualisation
-cols = ['#FF7F50', '#FF6347', '#FF4500', '#FFD700', '#FFA500', '#FF8C00',
-        '#DDA0DD', '#EE82EE', '#DA70D6', '#FF00FF', '#FF00FF', '#BA55D3', '#9370DB', '#8A2BE2',
-        '#FFC0CB', '#FFB6C1', '#FF69B4', '#FF1493', '#DB7093', '#C71585', '#40E0D0',
-        '#E0FFFF', '#00FFFF', '#00FFFF', '#7FFFD4', '#66CDAA', '#AFEEEE',
-        '#48D1CC', '#00CED1', '#20B2AA', '#5F9EA0', '#008B8B', '#008080',
-        '#87CEFA', '#87CEEB', '#00BFFF', '#B0C4DE', '#1E90FF', '#6495ED',
-        '#4682B4', '#4169E1', '#0000FF', '#7B68EE', '#6A5ACD', '#483D8B'] * 10
-
-
-def create_map(df, cluster_column):
-    location_map = folium.Map(location=[df.Latitude.mean(), df.Longitude.mean()], zoom_start=11, tiles='OpenStreetMap')
-
-    for _, row in df.iterrows():
-        if row[cluster_column] == -1:
-            cluster_colour = '#DC143C'
-        else:
-            cluster_colour = cols[int(row[cluster_column])]
-
-        folium.CircleMarker(
-            location=[row['Latitude'], row['Longitude']],
-            radius=5,
-            color=cluster_colour,
-            fill=True,
-            fill_color=cluster_colour
-        ).add_to(location_map)
-
-    return location_map
-
 def loaded_model(filename):
     filename = filename
     loaded_model = joblib.load(filename)
@@ -91,7 +61,7 @@ def loaded_clinics():
 
 def googlemap(clinics,latitude,longitude):
     # search google map for distance and timing
-    google_maps = googlemaps.Client(key='Your API')
+    google_maps = googlemaps.Client(key='Your Google API')
     clinics['Distance'] = pd.Series(np.zeros(len(clinics)), index=clinics.index)
     clinics['Travel Time'] = pd.Series(np.zeros(len(clinics)), index=clinics.index)
 
@@ -124,12 +94,14 @@ def index():
     #postal_code = None
     form = ClinicForm()
     session['postal_code'] = None
-    if form.postal_code.data:
+    if form.validate_on_submit():
         session['postal_code'] = form.postal_code.data
         return redirect(url_for('results'))
+    else:
+        session['postal_code'] = None
     return render_template('index.html',
                            current_time=current_time, form=form,
-                           postal_code=session['postal_code'])
+                           postal_code=session['postal_code'],flash=flash)
 
 @app.route('/results',methods=['GET','POST'])
 def results():
@@ -142,24 +114,34 @@ def results():
     if session['postal_code']:
         #covert the input value
         buildings = get_coordinates(session['postal_code'])
-        latitude = buildings[0]['LATITUDE']
-        longitude = buildings[0]['LONGITUDE']
-        address = buildings[0]['ADDRESS']
-        user_input = np.array([float(latitude), float(longitude)])
-        user_input = user_input.reshape(1, -1)
-        #load the trained model & data
-        model = loaded_model('data/final_model.sav')
-        clinic_full, coordinates = loaded_clinics()
-        #predict the input's cluster and find out all the coordinates in the cluster
-        cluster_labels_predicted = model.predict(user_input)
-        clinic_cluster = coordinates.loc[coordinates['kmeans'] == int(cluster_labels_predicted)]
-        clinic_full['Latitude'] = clinic_full['Latitude'].astype(float)
-        clinic_full['Longitude'] = clinic_full['Longitude'].astype(float)
-        clinic_cluster ['Latitude'] = clinic_cluster ['Latitude'].astype(float)
-        clinic_cluster ['Longitude'] = clinic_cluster ['Longitude'].astype(float)
-        clinics = pd.merge(clinic_full, clinic_cluster, how='left', on=['Latitude','Longitude'])
-        clinics = clinics.loc[clinics['kmeans'] == int(cluster_labels_predicted)]
-        clinics_list = googlemap(clinics,latitude,longitude)
+        if buildings:
+            latitude = buildings[0]['LATITUDE']
+            longitude = buildings[0]['LONGITUDE']
+            address = buildings[0]['ADDRESS']
+            user_input = np.array([float(latitude), float(longitude)])
+            user_input = user_input.reshape(1, -1)
+            #load the trained model & data
+            model = loaded_model('data/final_model.sav')
+            clinic_full, coordinates = loaded_clinics()
+            #predict the input's cluster and find out all the coordinates in the cluster
+            cluster_labels_predicted = model.predict(user_input)
+            clinic_cluster = coordinates.loc[coordinates['kmeans'] == int(cluster_labels_predicted)]
+            clinic_full['Latitude'] = clinic_full['Latitude'].astype(float)
+            clinic_full['Longitude'] = clinic_full['Longitude'].astype(float)
+            clinic_cluster ['Latitude'] = clinic_cluster ['Latitude'].astype(float)
+            clinic_cluster ['Longitude'] = clinic_cluster ['Longitude'].astype(float)
+            clinics = pd.merge(clinic_full, clinic_cluster, how='left', on=['Latitude','Longitude'])
+            clinics = clinics.loc[clinics['kmeans'] == int(cluster_labels_predicted)]
+            clinics_list = googlemap(clinics,latitude,longitude)
+            clinics_list['Contact Number'] = clinics_list['Contact Number'].astype(np.int64)
+        else:
+            session['postal_code'] = None
+            latitude = None
+            longitude = None
+            cluster_labels_predicted = None
+            address = None
+            clinics = None
+            clinics_list = None
     return render_template('results.html',
                            current_time=current_time,postal_code=session['postal_code'],
                            latitude=latitude,longitude=longitude,
