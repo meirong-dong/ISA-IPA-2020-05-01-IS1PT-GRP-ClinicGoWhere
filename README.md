@@ -4,7 +4,7 @@ KMeans-ased Clinics Recommendation System
 # SECTION 1 : PROJECT TITLE
 KMeans-based Clinic Recommendation System
 
-<img width="812" alt="welcome" src="https://github.com/meirong-dong/ISA-IPA-2020-05-01-IS2PT-GRP-ClinicGoWhere/blob/master/reports/cover.jpg">
+<img width="830" alt="welcome" src="https://github.com/meirong-dong/ISA-IPA-2020-05-01-IS2PT-GRP-ClinicGoWhere/blob/master/reports/cover.jpg">
 
 # SECTION 2 : EXECUTIVE SUMMARY / PAPER ABSTRACT
 One of the notable challenges in the primary care setting is the lack of informed choice. That is patients do not know which clinics to visit that can best serve their interest and primary care professionals do not know where to set up clinics with their specialties to help more patients. The project recognized the challenge and prototyped a KMeans-based clinics recommendation system to help both parties to make better decisions. The system can be expanded to make more precise recommendations if more information (e.g. population groups in an area, user feedback) are gathered.
@@ -15,7 +15,7 @@ One of the notable challenges in the primary care setting is the lack of informe
 | DONG MEIRONG | A0195346W | Business idea generation, data analysis, web app development, Project report, video| e0384977@u.nus.edu |
 
 # SECTION 4 : USER GUIDE
-Please refer to reports\Installation and User Guide
+https://github.com/meirong-dong/ISA-IPA-2020-05-01-IS2PT-GRP-ClinicGoWhere/blob/master/reports/Appendix1-Installation%20and%20User%20Guide.pdf
 
 # SECTION 5 : PROJECT REPORT / PAPER
 https://github.com/meirong-dong/ISA-IPA-2020-05-01-IS2PT-GRP-ClinicGoWhere/blob/master/reports/Project%20Report.pdf
