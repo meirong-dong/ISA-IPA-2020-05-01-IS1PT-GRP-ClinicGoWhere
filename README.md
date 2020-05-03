@@ -9,7 +9,7 @@ One of the notable challenges in the primary care setting is the lack of informe
 # SECTION 3 : CREDITS / PROJECT CONTRIBUTION
 | Official Full Name | Student ID (MTech Applicable)| Work Items (Who Did What) | Email (Optional) |
 | :---: | :---: | :---: | :---: |
-| DONG MEIRONG | A0195346W | Business idea generation, data analysis, web app development, Project report, video| e0384977@u.nus.edu |
+| DONG MEIRONG | A0195346W | business idea generation, data analysis, web app development, project report, video| e0384977@u.nus.edu |
 
 # SECTION 4 : USER GUIDE
 https://github.com/meirong-dong/ISA-IPA-2020-05-01-IS2PT-GRP-ClinicGoWhere/blob/master/reports/Appendix1-Installation%20and%20User%20Guide.pdf
