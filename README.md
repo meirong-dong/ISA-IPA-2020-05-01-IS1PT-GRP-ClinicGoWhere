@@ -1,6 +1,3 @@
-# ISA-IPA-2020-05-01-IS2PT-GRP-ClinicGoWhere
-KMeans-ased Clinics Recommendation System
-
 # SECTION 1 : PROJECT TITLE
 KMeans-based Clinic Recommendation System
 
