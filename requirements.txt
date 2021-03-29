@@ -73,7 +73,7 @@ protobuf==3.11.2
 pyasn1==0.4.8
 pyasn1-modules==0.2.8
 pyDOE==0.3.8
-Pygments==2.6.1
+Pygments==2.7.4
 pygments-anyscript==1.2.1
 PyMySQL==0.9.3
 pyparsing==2.4.7
